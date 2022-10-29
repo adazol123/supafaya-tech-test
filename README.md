@@ -6,8 +6,8 @@ Test Answered by: [Daniel Lozada](https://github.com/adazol123)
      Test Finished:     October 30, 2022 5:28AM
      Duration:          1 - 2 hours
 
-     Test URL:          https://supafaya-tech-test.vercel.app/
-     Test repository:
+     Site URL:          https://supafaya-tech-test.vercel.app/
+     Repository:        https://github.com/adazol123/supafaya-tech-test
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
