@@ -1,5 +1,5 @@
+import React from 'react';
 import './App.css';
-
 // Hi everyone, thank you for the interest in joining Supafaya.
 
 // To give you a brief background about Supafaya:
@@ -53,68 +53,185 @@ import './App.css';
 // - The goal here is to replicate submitting a form.
 // - Input username, fullname, age then upon 'Submit' button click, the input fields should be reflected below.
 
-function HiringTest () {
+
+function HiringTest() {
+
+  // PART 1. Vanish
+  // - The goal here is to make the h1 text '1. Make this Vanish' disappear once you click the button.
+
+  const [toggleDisplay, setToggleDisplay] = React.useState(true);
+
+  const toggleHandler = () => {
+    //Toggle boolean value on the toggleDisplay state
+    setToggleDisplay(display => !display)
+  }
+
+  // PART 2. Create a basic timer
+  // - The goal here is to create a timer.
+  // - Upon 'Start' button click, the timer should start counting
+  // - Upon 'Stop' button click, the timer should pause counting
+  // - Upon 'Reset' button click, the timer should reset counting
+
+  const [timer, setTimer] = React.useState(0);
+
+  const startTimer = () => {
+    window.tickID = setInterval(() => {
+      setTimer(timer => timer + 1);
+    }, 1000)
+  }
+  const stopTimer = () => {
+    clearInterval(window.tickID);
+  }
+
+  const resetTimer = () => {
+    clearInterval(window.tickID);
+    setTimer(0);
+  }
+
+  // PART 3. Add to a list
+  // - The goal here is to add the input to a list below
+  // - Upon input and click of the 'add' button, the input should be reflected and added below the row
+
+  const [tempText, setTempText] = React.useState('');
+  const [todo, setTodo] = React.useState({
+    list: []
+  });
+
+  const inputChangeHandler = (event) => {
+    //change temporary text for input text
+    setTempText(event.target.value)
+  }
+  const todoSubmitHandler = (event) => {
+    //add task to the list array inside todo object
+    setTodo({
+      list: [
+        ...todo.list, {
+          task: tempText,
+          completed: false
+        }]
+    })
+    //reset input text value
+    setTempText('')
+  }
+
+
+  // PART 4. Submit a form
+  // - The goal here is to replicate submitting a form.
+  // - Input username, fullname, age then upon 'Submit' button click, the input fields should be reflected below.
+
+  const initialFormField = { username: '', fullname: '', age: '', }
+  const [form, setForm] = React.useState(initialFormField)
+  const [mockDB, setMockDB] = React.useState(null)
+  const formOnChangeHandler = (event) => setForm({ ...form, [event.target.name]: event.target.value })
+
+  const formSubmitHandler = (event) => {
+    //prevent the site to reload for every form submit (submit button clicked)
+    event.preventDefault();
+
+
+    //reset mock database
+    setMockDB(null)
+
+    //mock sending form to database with delay
+    setTimeout(() => {
+      setMockDB(form)
+
+      //clear form
+      setForm(initialFormField)
+    }, 600)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
 
         {/* Challenge 1: Make the paragraph button vanish on click */}
         <div>
-          <h1>1. Make this vanish</h1>
-          <button>Click me!</button>
+          {/* if toggleDIsplay is true -> display the H1 element */}
+          {toggleDisplay && <h1>1. Make this vanish</h1>}
+          <button onClick={toggleHandler}>Click me!</button>
         </div>
 
         {/* Challenge 2: Make this timer work */}
         <div>
           <h1>2. Create a Basic Timer</h1>
-          <span> mins </span>
-          <span> secs</span>
+          <span> {Math.floor(timer / 60)} mins </span>
+          <span> {timer % 60} secs</span>
           <div className='button2'>
-            <button className='button green'>Start</button>
-            <button className='button red'>Stop</button>
-            <button className='button yellow'>Reset</button>
+            <button className='button green' onClick={startTimer}>Start</button>
+            <button className='button red' onClick={stopTimer}>Stop</button>
+            <button className='button yellow' onClick={resetTimer}>Reset</button>
           </div>
         </div>
 
         {/* Challenge 3: Todo App */}
         <div>
           <h1>3. Add to a list</h1>
-          <input />
-          <button>Add Task</button>
+          <input
+            type='text'
+            name='todo'
+            value={tempText}
+            onChange={inputChangeHandler}
+          />
+          <button onClick={todoSubmitHandler}>Add Task</button>
         </div>
-        
+        <div>
+          {/** Iterate over the array over the list of task on todo */}
+          {todo.list && todo.list.map((item, index) => <p key={index}>{item.task}</p>)}
+        </div>
+
         {/* Challenge 4: Submit a form */}
         <div>
           <h1>4. Submit a form</h1>
-          <form>
+          <form onSubmit={formSubmitHandler}>
             <div>
               <label htmlFor="userName">
                 Username:
-                <input />
+                <input
+                  name={'username'}
+                  value={form.username}
+                  onChange={formOnChangeHandler}
+                />
               </label>
             </div>
             <br />
             <div>
               <label htmlFor="fullName">
                 FullName:
-                <input />
+                <input
+                  name={'fullname'}
+                  value={form.fullname}
+                  onChange={formOnChangeHandler}
+                />
               </label>
             </div>
             <br />
             <div>
               <label htmlFor="age">
                 Age:
-                <input />
+                <input
+                  name={'age'}
+                  value={form.age}
+                  onChange={formOnChangeHandler}
+                />
               </label>
             </div>
             <br />
             <button>Submit</button>
-              <h4>Request Sent to DB with below request data</h4>
-              <ul>
-                <li>UserName: </li>
-                <li>FullName: </li>
-                <li>Age: </li>
-              </ul>
+            <div className='request_data'>
+
+              {
+                mockDB &&
+                <React.Fragment>
+                  <h4>Request Sent to DB with below request data</h4>
+                  <ul>
+                    <li>UserName: {mockDB.username}</li>
+                    <li>FullName: {mockDB.fullname}</li>
+                    <li>Age: {mockDB.age}</li>
+                  </ul>
+                </React.Fragment>
+              }
+            </div>
           </form>
         </div>
       </header>

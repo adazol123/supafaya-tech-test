@@ -1,5 +1,14 @@
 # Getting Started with Create React App
 
+Test Answered by: [Daniel Lozada](https://github.com/adazol123)
+
+     Test Started:      October 30, 2022 3:50AM
+     Test Finished:     October 30, 2022 5:28AM
+     Duration:          1 - 2 hours
+
+     Test URL:          https://supafaya-tech-test.vercel.app/
+     Test repository:
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
